@@ -30,4 +30,7 @@
 *.exe
 *.out
 *.app
-CMakeFiles/
+*.cmake
+CMakeFiles/*
+src/CMakeFiles/*
+vector-add-buffers.fpga.prj/

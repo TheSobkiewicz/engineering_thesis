@@ -1,0 +1,11 @@
+Consolidate compiler generated dependencies of target vector-add-buffers.fpga
+[ 50%] Building CXX object src/CMakeFiles/vector-add-buffers.fpga.dir/vector-add-buffers.cpp.o
+[ 50%] Linking CXX executable ../vector-add-buffers.fpga
+aoc: Compiling for FPGA. This process may take several hours to complete.  Prior to performing this compile, be sure to check the reports to ensure the design will meet your performance targets.  If the reports indicate performance targets are not being met, code edits may be required.  Please refer to the oneAPI FPGA Optimization Guide for information on performance tuning applications for FPGAs.
+aoc: Warning: A timing failure has been detected in the outputted binary. There was 1 timing violation,
+which was a Hold failure of 10ps on clock:
+mem_ss_top|mem_ss_fm_inst|intf_0|intf_0_core_usr_clk
+Consider doing one or more of the following:
+  - Recompiling with a different seed (using -Xsseed=<S>).
+  - Reducing the area usage of your design.
+  - If you are using a custom BSP, discuss the failure with your BSP vendor.

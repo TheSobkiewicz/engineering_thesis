@@ -4,10 +4,13 @@
 #include "HelixSolver/Application.h"
 #include "HelixSolver/TrackFindingAlgorithm.h"
 
-namespace HelixSolver {
+namespace HelixSolver
+{
 
-    Application::Application(std::vector<std::string> &argv) {
-        if (argv.size() < 2) {
+    Application::Application(std::vector<std::string> &argv)
+    {
+        if (argv.size() < 2)
+        {
             std::cerr << "You must pass configuration file location as program arg!" << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -15,15 +18,12 @@ namespace HelixSolver {
         configFile >> config;
     }
 
-    int Application::Run() {
+    void Application::Run()
+    {
         event.LoadFromFile(config["inputFile"]);
         event.BuildStubsFunctions();
         TrackFindingAlgorithm algorithm(config, event);
         algorithm.Run();
-        return 0;
-    }
-
-    Application::~Application() {
     }
 
 } // HelixSolver

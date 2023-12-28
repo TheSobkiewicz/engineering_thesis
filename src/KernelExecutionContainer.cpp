@@ -18,11 +18,11 @@ namespace HelixSolver {
         PrepareLinspaces();
 
         deltaX = X[1] - X[0];
-        haldOfDeltaX = deltaX / 2;
+        halfOfDeltaX = deltaX / 2;
 
         deltaY = Y[1] - Y[0];
 
-        map.fill(SolutionCircle{0});
+        solution.fill(SolutionCircle{0});
     }
 
     void KernelExecutionContainer::FillOnDevice() {
@@ -41,9 +41,7 @@ namespace HelixSolver {
         std::cout << "Platform: " <<  platform.get_info<sycl::info::platform::name>().c_str() << std::endl;
         std::cout << "Device: " <<  device.get_info<sycl::info::device::name>().c_str() << std::endl;
 
-        std::array<SolutionCircle, ACC_SIZE> tempMap;
-        tempMap.fill(SolutionCircle{0});
-        sycl::buffer<SolutionCircle, 1> mapBuffer(tempMap.begin(), tempMap.end());
+        sycl::buffer<SolutionCircle, 1> mapBuffer(ACC_SIZE);
 
         std::vector<float> rVec = event.GetR();
         std::vector<float> phiVec = event.GetPhi();
@@ -73,15 +71,15 @@ namespace HelixSolver {
         std::cout << "Execution time: " << kernelTime << " seconds" << std::endl;
 
         sycl::host_accessor hostMapAccessor(mapBuffer, sycl::read_only);
-        for (uint32_t i = 0; i < ACC_SIZE; ++i) map[i] = hostMapAccessor[i];
+        for (uint32_t i = 0; i < ACC_SIZE; ++i) solution[i] = hostMapAccessor[i];
     }
 
     void KernelExecutionContainer::Fill() {
         for (const auto& stubFunc : event.GetStubsFuncs()) {
             for (uint32_t i = 0; i < X.size(); ++i) {
                 float x = X[i];
-                float xLeft = x - haldOfDeltaX;
-                float xRight = x + haldOfDeltaX;
+                float xLeft = x - halfOfDeltaX;
+                float xRight = x + halfOfDeltaX;
                 
                 float yLeft = stubFunc(xLeft);
                 float yRight = stubFunc(xRight);
@@ -90,14 +88,14 @@ namespace HelixSolver {
                 float yRightIdx = FindClosest(Y, yRight);
 
                 for (uint32_t j = yRightIdx; j <= yLeftIdx; ++j) {
-                    map[j * ACC_WIDTH + i].isValid = true;
+                    solution[j * ACC_WIDTH + i].isValid = true;
                 }
             }
         }
     }
 
     const std::array<SolutionCircle, ACC_SIZE> &KernelExecutionContainer::GetSolution() const {
-        return map;
+        return solution;
     }
 
     void KernelExecutionContainer::PrepareLinspaces() {
@@ -115,7 +113,7 @@ namespace HelixSolver {
     void KernelExecutionContainer::PrintMainAcc() const {
         for (uint32_t i = 0; i < ACC_HEIGHT; ++i) {
             for (uint32_t j = 0; j < ACC_WIDTH; ++j) {
-                std::cout << int(map[i * ACC_WIDTH + j].isValid) << " ";
+                std::cout << int(solution[i * ACC_WIDTH + j].isValid) << " ";
             }
             std::cout << std::endl;
         }

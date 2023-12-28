@@ -9,10 +9,8 @@ namespace HelixSolver {
     class Application {
     public:
         explicit Application(std::vector<std::string> &argv);
-
-        int Run();
-
-        ~Application();
+        ~Application() {}
+        void Run();
 
     private:
         Event event;

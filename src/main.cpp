@@ -7,5 +7,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < argc; ++i) argvVector.push_back(argv[i]);
 
     HelixSolver::Application app(argvVector);
-    return app.Run();
+    app.Run();
+    return 0;
 }

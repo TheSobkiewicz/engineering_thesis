@@ -6,7 +6,7 @@
 namespace HelixSolver {
 
     TrackFindingAlgorithm::TrackFindingAlgorithm(nlohmann::json &config, const Event& event)
-            : config(config), bConfig(config["B"].get<double>()), event(event),
+            : config(config), bConfig(config["B"].get<double>()),
               kernelExecContainer(config["main_accumulator_config"], event) {
     }
 

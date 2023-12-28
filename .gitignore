@@ -53,7 +53,7 @@ cmake-build-debug/
 
 # out files
 detected-circles.txt
-
+bin/
 # jupyterLab temp files
 .ipynb_checkpoints/
 

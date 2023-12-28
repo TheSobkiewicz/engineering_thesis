@@ -41,9 +41,9 @@ namespace HelixSolver {
 
         double deltaY;
         double deltaX;
-        double haldOfDeltaX;
+        double halfOfDeltaX;
 
-        std::array<SolutionCircle, ACC_SIZE> map;
+        std::array<SolutionCircle, ACC_SIZE> solution;
     };
 
 } // namespace HelixSolver

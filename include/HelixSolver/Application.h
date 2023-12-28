@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 #include "HelixSolver/Event.h"
 
@@ -8,16 +8,15 @@ namespace HelixSolver {
 
     class Application {
     public:
-        explicit Application(std::vector<std::string> &p_argv);
+        explicit Application(std::vector<std::string> &argv);
 
         int Run();
 
         ~Application();
 
     private:
-        Event m_event;
-        nlohmann::json m_config;
-        std::vector<std::string> &m_argv;
+        Event event;
+        nlohmann::json config;
     };
 
 } // HelixSolver

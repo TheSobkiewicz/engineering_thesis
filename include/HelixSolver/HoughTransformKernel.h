@@ -38,12 +38,12 @@ private:
                                    float *PHI,
                                    uint8_t *LAYER) const;
 
-    sycl::accessor<SolutionCircle, 1, sycl::access::mode::write, sycl::access::target::global_buffer> m_mapAccessor;
-    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::global_buffer> m_rAccessor;
-    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::global_buffer> m_phiAccessor;
-    sycl::accessor<uint8_t, 1, sycl::access::mode::read, sycl::access::target::global_buffer> m_layersAccessor;
-    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::global_buffer> m_xLinspaceAccessor;
-    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::global_buffer> m_yLinspaceAccessor;
+    sycl::accessor<SolutionCircle, 1, sycl::access::mode::write, sycl::access::target::device> mapAccessor;
+    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::device> rAccessor;
+    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::device> phiAccessor;
+    sycl::accessor<uint8_t, 1, sycl::access::mode::read, sycl::access::target::device> layersAccessor;
+    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::device> xLinspaceAccessor;
+    sycl::accessor<float, 1, sycl::access::mode::read, sycl::access::target::device> m_yLinspaceAccessor;
 };
 
 HoughTransformKernel::HoughTransformKernel(sycl::handler &h,
@@ -53,11 +53,11 @@ HoughTransformKernel::HoughTransformKernel(sycl::handler &h,
                                            sycl::buffer<uint8_t, 1> &layersBuffer,
                                            sycl::buffer<float, 1> &XLinspaceBuf,
                                            sycl::buffer<float, 1> &YLinspaceBuf) 
-: m_mapAccessor(mapBuffer, h, sycl::write_only),
-  m_rAccessor(rBuffer, h, sycl::read_only),
-  m_phiAccessor(phiBuffer, h, sycl::read_only),
-  m_layersAccessor(layersBuffer, h, sycl::read_only),
-  m_xLinspaceAccessor(XLinspaceBuf, h, sycl::read_only),
+: mapAccessor(mapBuffer, h, sycl::write_only),
+  rAccessor(rBuffer, h, sycl::read_only),
+  phiAccessor(phiBuffer, h, sycl::read_only),
+  layersAccessor(layersBuffer, h, sycl::read_only),
+  xLinspaceAccessor(XLinspaceBuf, h, sycl::read_only),
   m_yLinspaceAccessor(YLinspaceBuf, h, sycl::read_only) {
 
 }
@@ -67,12 +67,12 @@ void HoughTransformKernel::TransferDataToBoardMemory(float *X,
                                                       float *R,
                                                       float *PHI,
                                                       uint8_t *LAYER) const {
-    size_t stubsNum = m_rAccessor.get_count();
+    size_t stubsNum = rAccessor.size();
 
     #pragma unroll 64
     [[intel::ivdep]]
     for (uint32_t i = 0; i < ACC_WIDTH; ++i) {
-        X[i] = m_xLinspaceAccessor[i];
+        X[i] = xLinspaceAccessor[i];
     }
 
     #pragma unroll 64
@@ -86,9 +86,9 @@ void HoughTransformKernel::TransferDataToBoardMemory(float *X,
     for (uint32_t i = 0; i < MAX_STUB_NUM; ++i)
     {
         if (i < stubsNum) {
-            R[i] = m_rAccessor[i];
-            PHI[i] = m_phiAccessor[i];
-            LAYER[i] = m_layersAccessor[i];
+            R[i] = rAccessor[i];
+            PHI[i] = phiAccessor[i];
+            LAYER[i] = layersAccessor[i];
         }
     }
 }
@@ -98,7 +98,7 @@ void HoughTransformKernel::FillBoardAccumulator(float *X,
                                                 float *PHI,
                                                 uint8_t *LAYER,
                                                 bool ACCUMULATOR[][ACC_SIZE]) const {
-    size_t stubsNum = m_rAccessor.get_count();
+    size_t stubsNum = rAccessor.size();
 
     float dx = X[1] - X[0];
     float dxHalf = dx / 2.0;
@@ -160,9 +160,9 @@ void HoughTransformKernel::TransferSolutionToHostDevice(bool ACCUMULATOR[][ACC_S
             float qOverPt = qOverPtIdx * qOverPtMultiplier + Q_OVER_P_BEGIN;
             float phi_0 = phiIdx * phiMultiplier + PHI_BEGIN;
             
-            m_mapAccessor[i].isValid = true;
-            m_mapAccessor[i].r = ((1 / qOverPt) / B) * 1000;
-            m_mapAccessor[i].phi = phi_0 + M_PI_2;
+            mapAccessor[i].isValid = true;
+            mapAccessor[i].r = ((1 / qOverPt) / B) * 1000;
+            mapAccessor[i].phi = phi_0 + M_PI_2;
         }
     }
 }

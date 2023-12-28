@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <functional>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 #include "HelixSolver/Stub.h"
 
@@ -24,16 +24,16 @@ namespace HelixSolver {
         std::vector<float> GetPhi() const;
         std::vector<uint8_t> GetLayers() const;
 
-        void BuildStubsFunctions(const nlohmann::json& config);
+        void BuildStubsFunctions();
 
         void Print() const;
 
     private:
-        std::vector<Stub> m_stubs;
-        std::vector<std::function<float(float)>> m_stubsFunctions;
-        std::vector<float> m_r;
-        std::vector<float> m_phi;
-        std::vector<uint8_t> m_layers;
+        std::vector<Stub> stubs;
+        std::vector<std::function<float(float)>> stubsFunctions;
+        std::vector<float> radiousVector;
+        std::vector<float> phiVector;
+        std::vector<uint8_t> layers;
     };
 
 } // HelixSolver

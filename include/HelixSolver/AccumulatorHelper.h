@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 namespace HelixSolver {
 

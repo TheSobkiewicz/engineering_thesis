@@ -5,7 +5,7 @@
 #include <utility>
 #include <functional>
 
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 #include "HelixSolver/Event.h"
 #include "HelixSolver/Constants.h"
 #include "HelixSolver/SolutionCircle.h"
@@ -33,17 +33,17 @@ namespace HelixSolver {
     private:
         void PrepareLinspaces();
 
-        nlohmann::json &m_config;
-        const Event &m_event;
+        nlohmann::json &config;
+        const Event &event;
 
-        std::vector<float> m_X;
-        std::vector<float> m_Y;
+        std::vector<float> X;
+        std::vector<float> Y;
 
-        double m_dy;
-        double m_dx;
-        double m_dxHalf;
+        double deltaY;
+        double deltaX;
+        double haldOfDeltaX;
 
-        std::array<SolutionCircle, ACC_SIZE> m_map;
+        std::array<SolutionCircle, ACC_SIZE> map;
     };
 
 } // namespace HelixSolver

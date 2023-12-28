@@ -1,4 +1,4 @@
-CC := dpcpp
+CC := icpx -fsycl
 CFLAGS := -std=c++17
 WFLAGS := -Wall -Wextra
 

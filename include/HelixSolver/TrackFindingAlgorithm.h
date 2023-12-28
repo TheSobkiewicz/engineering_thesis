@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 #include "HelixSolver/Stub.h"
 #include "HelixSolver/KernelExecutionContainer.h"
@@ -15,10 +15,10 @@ namespace HelixSolver {
         void Run();
 
     private:
-        nlohmann::json &m_config;
-        const double m_B{0};
-        const Event &m_event;
-        KernelExecutionContainer m_kec;
+        nlohmann::json &config;
+        const double bConfig{0};
+        const Event &event;
+        KernelExecutionContainer kernelExecContainer;
     };
 
 } // HelixSolver

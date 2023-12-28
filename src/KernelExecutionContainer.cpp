@@ -22,7 +22,7 @@ namespace HelixSolver {
 
         deltaY = Y[1] - Y[0];
 
-        solution.fill(SolutionCircle{0});
+        solution.fill(SolutionCircle{0,0,0});
     }
 
     void KernelExecutionContainer::FillOnDevice() {

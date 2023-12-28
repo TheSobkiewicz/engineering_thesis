@@ -1,5 +1,3 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include <memory>
 #include <boost/circular_buffer.hpp>
 

@@ -3,9 +3,9 @@
 #include "HelixSolver/Application.h"
 
 int main(int argc, char *argv[]) {
-    std::vector<std::string> l_argv;
-    for (int i = 0; i < argc; ++i) l_argv.push_back(argv[i]);
+    std::vector<std::string> argvVector;
+    for (int i = 0; i < argc; ++i) argvVector.push_back(argv[i]);
 
-    HelixSolver::Application app(l_argv);
+    HelixSolver::Application app(argvVector);
     return app.Run();
 }

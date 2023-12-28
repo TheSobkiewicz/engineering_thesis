@@ -12,9 +12,9 @@ namespace HelixSolver {
     public:
         Event() = default;
 
-        Event(std::string p_filePath);
+        Event(std::string filePath);
 
-        void LoadFromFile(std::string p_filePath);
+        void LoadFromFile(std::string filePath);
         // TODO: loadFromRootFile
 
         const std::vector<Stub> &GetStubs() const;

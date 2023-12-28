@@ -10,14 +10,13 @@ namespace HelixSolver {
 
     class TrackFindingAlgorithm {
     public:
-        TrackFindingAlgorithm(nlohmann::json &p_config, const Event &p_event);
+        TrackFindingAlgorithm(nlohmann::json &config, const Event &event);
 
         void Run();
 
     private:
         nlohmann::json &config;
         const double bConfig{0};
-        const Event &event;
         KernelExecutionContainer kernelExecContainer;
     };
 

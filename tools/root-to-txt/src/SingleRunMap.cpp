@@ -2,17 +2,17 @@
 #include <fstream>
 #include <algorithm>
 
-SingleRunMap::SingleRunMap(TTree *p_tree, int p_entryNo) {
+SingleRunMap::SingleRunMap(TTree *tree, int entryNumber) {
     std::vector<double> *l_spX = new std::vector<double>();
     std::vector<double> *l_spY = new std::vector<double>();
     std::vector<double> *l_spZ = new std::vector<double>();
     std::vector<uint8_t> *l_spLayer = new std::vector<uint8_t>();
 
-    p_tree->SetBranchAddress("spX", &l_spX);
-    p_tree->SetBranchAddress("spY", &l_spY);
-    p_tree->SetBranchAddress("spZ", &l_spZ);
-    p_tree->SetBranchAddress("spLayer", &l_spLayer);
-    p_tree->GetEntry(p_entryNo);
+    tree->SetBranchAddress("spX", &l_spX);
+    tree->SetBranchAddress("spY", &l_spY);
+    tree->SetBranchAddress("spZ", &l_spZ);
+    tree->SetBranchAddress("spLayer", &l_spLayer);
+    tree->GetEntry(entryNumber);
 
     int l_entrySize = l_spX->size();
 
@@ -34,14 +34,14 @@ void SingleRunMap::addPoint(const Point &point) {
     m_points.push_back(point);
 }
 
-void SingleRunMap::dumpToFile(std::string_view p_fileName) const {
-    std::ofstream l_file;
-    l_file.open(p_fileName);
-    l_file.precision(64);
+void SingleRunMap::dumpToFile(std::string_view fileName) const {
+    std::ofstream file;
+    file.open(fileName);
+    file.precision(64);
     std::for_each(m_points.begin(), m_points.end(),
-                  [&l_file](const Point &l_point) {
-                      l_file << l_point.getX() << " " << l_point.getY() << " " << l_point.getZ() << " " << static_cast<int>(l_point.getLayer()) << std::endl;
+                  [&file](const Point &l_point) {
+                      file << l_point.getX() << " " << l_point.getY() << " " << l_point.getZ() << " " << static_cast<int>(l_point.getLayer()) << std::endl;
                   });
 
-    l_file.close();
+    file.close();
 }

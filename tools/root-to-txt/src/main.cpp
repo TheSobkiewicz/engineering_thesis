@@ -13,9 +13,9 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    TFile l_file(argv[1], "READ");
+    TFile file(argv[1], "READ");
 
-    TTree *tree = dynamic_cast<TTree *>(l_file.Get(argv[2]));
+    TTree *tree = dynamic_cast<TTree *>(file.Get(argv[2]));
 
     if (tree == nullptr) {
         exit(EXIT_FAILURE);
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         singleEvent.dumpToFile(fileName);
     }
 
-    l_file.Close();
+    file.Close();
 
     std::cout << "Most entries: " << mostFileName << std::endl;
 

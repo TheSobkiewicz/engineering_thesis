@@ -8,13 +8,13 @@
 
 class SingleRunMap {
 public:
-    SingleRunMap(TTree *p_tree, int p_entryNo);
+    SingleRunMap(TTree *tree, int entryNo);
 
     int getSize() const;
 
-    void addPoint(const Point &p_point);
+    void addPoint(const Point &point);
 
-    void dumpToFile(std::string_view p_fileName) const;
+    void dumpToFile(std::string_view fileName) const;
 
 private:
     std::vector<Point> m_points;

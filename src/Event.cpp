@@ -12,15 +12,15 @@ namespace HelixSolver {
 
     void Event::LoadFromFile(std::string filePath) {
         try {
-            std::ifstream l_pointsFile(filePath);
-            float l_x, l_y, l_z;
-            uint32_t l_layer;
-            while (l_pointsFile >> l_x >> l_y >> l_z >> l_layer) {
-                stubs.push_back(Stub{l_x, l_y, l_z, static_cast<uint8_t>(l_layer)});
+            std::ifstream pointsFile(filePath);
+            float x, y, z;
+            uint32_t layer;
+            while (pointsFile >> x >> y >> z >> layer) {
+                stubs.push_back(Stub{x, y, z, static_cast<uint8_t>(layer)});
             }
         }
-        catch (std::exception &l_exc) {
-            std::cerr << l_exc.what() << std::endl;
+        catch (std::exception &exc) {
+            std::cerr << exc.what() << std::endl;
             exit(EXIT_FAILURE);
         }
     }
@@ -44,12 +44,13 @@ namespace HelixSolver {
         for (const auto& stub : stubs) {
             const auto[rad, ang] = cart2pol(stub.x, stub.y);
             const float r = rad / 1000.0;
+            const float phi = ang;
 
             radiousVector.push_back(r);
             phiVector.push_back(ang);
             layers.push_back(stub.layer);
 
-            auto fun = [r, ang](float x) { return -r * x + ang; };
+            auto fun = [r, phi](float x) { return -r * x + phi; };
             stubsFunctions.push_back(fun);
         }
     }

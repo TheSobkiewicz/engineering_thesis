@@ -16,13 +16,13 @@ namespace HelixSolver {
 
     class KernelExecutionContainer {
     public:
-        KernelExecutionContainer(nlohmann::json &p_config, const Event &m_event);
+        KernelExecutionContainer(nlohmann::json &config, const Event &m_event);
 
         void Fill();
 
         void FillOnDevice();
 
-        VectorIdxPair GetCellsAboveThreshold(uint8_t p_threshold) const;
+        VectorIdxPair GetCellsAboveThreshold(uint8_t threshold) const;
 
         void PrintMainAcc() const;
 

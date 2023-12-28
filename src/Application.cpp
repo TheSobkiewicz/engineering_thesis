@@ -11,15 +11,15 @@ namespace HelixSolver {
             std::cerr << "You must pass configuration file location as program arg!" << std::endl;
             exit(EXIT_FAILURE);
         }
-        std::ifstream l_configFile(argv[1]);
-        l_configFile >> config;
+        std::ifstream configFile(argv[1]);
+        configFile >> config;
     }
 
     int Application::Run() {
         event.LoadFromFile(config["inputFile"]);
         event.BuildStubsFunctions();
-        TrackFindingAlgorithm l_algorithm(config, event);
-        l_algorithm.Run();
+        TrackFindingAlgorithm algorithm(config, event);
+        algorithm.Run();
         return 0;
     }
 

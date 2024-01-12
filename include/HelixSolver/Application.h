@@ -7,14 +7,14 @@
 namespace HelixSolver {
 
     class Application {
-    public:
-        explicit Application(std::vector<std::string> &argv);
-        ~Application() {}
-        void Run();
+        public:
+            explicit Application(std::vector<std::string> &argv);
+            ~Application() {}
+            void Run();
 
-    private:
-        Event event;
-        nlohmann::json config;
+        private:
+            Event event;
+            nlohmann::json config;
     };
 
 } // HelixSolver

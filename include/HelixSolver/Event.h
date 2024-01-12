@@ -2,35 +2,24 @@
 
 #include <vector>
 #include <functional>
-#include "json.hpp"
 
-#include "HelixSolver/Stub.h"
 
-namespace HelixSolver {
+namespace HelixSolver
+{
 
-    class Event {
+    class Event
+    {
     public:
-        Event() = default;
+        void LoadAndProcessDataFromFile(std::string filePath);
 
-        Event(std::string filePath);
-
-        void LoadFromFile(std::string filePath);
-        // TODO: loadFromRootFile
-
-        const std::vector<Stub> &GetStubs() const;
-        const std::vector<std::function<float(float)>> &GetStubsFuncs() const;
-        
+        const std::vector<std::function<float(float)>> &getFunctionVector() const;
         std::vector<float> GetR() const;
         std::vector<float> GetPhi() const;
         std::vector<uint8_t> GetLayers() const;
 
-        void BuildStubsFunctions();
-
-        void Print() const;
-
     private:
-        std::vector<Stub> stubs;
-        std::vector<std::function<float(float)>> stubsFunctions;
+        void ProcessPoint(float x, float y, uint8_t layer);
+        std::vector<std::function<float(float)>> functionVector;
         std::vector<float> radiousVector;
         std::vector<float> phiVector;
         std::vector<uint8_t> layers;

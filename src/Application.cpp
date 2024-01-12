@@ -2,13 +2,12 @@
 #include <fstream>
 
 #include "HelixSolver/Application.h"
-#include "HelixSolver/TrackFindingAlgorithm.h"
+#include "HelixSolver/KernelExecutionContainer.h"
 
 namespace HelixSolver
 {
 
-    Application::Application(std::vector<std::string> &argv)
-    {
+    Application::Application(std::vector<std::string> &argv) {
         if (argv.size() < 2)
         {
             std::cerr << "You must pass configuration file location as program arg!" << std::endl;
@@ -16,14 +15,14 @@ namespace HelixSolver
         }
         std::ifstream configFile(argv[1]);
         configFile >> config;
+        event.LoadAndProcessDataFromFile(config["inputFile"].get<std::string>());
     }
 
-    void Application::Run()
-    {
-        event.LoadFromFile(config["inputFile"]);
-        event.BuildStubsFunctions();
-        TrackFindingAlgorithm algorithm(config, event);
-        algorithm.Run();
+    void Application::Run() {
+        KernelExecutionContainer kernelExecContainer(config["outputFile"].get<std::string>(), event);
+        kernelExecContainer.FillOnDevice();
+        kernelExecContainer.PrintMainAcc();
+        kernelExecContainer.DumpCalculatedSolutionToFile();
     }
 
 } // HelixSolver

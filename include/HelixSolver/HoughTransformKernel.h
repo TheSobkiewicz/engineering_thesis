@@ -148,9 +148,8 @@ void HoughTransformKernel::TransferSolutionToHostDevice(bool ACCUMULATOR[][ACC_S
                       ACCUMULATOR[5][i] +
                       ACCUMULATOR[6][i] +
                       ACCUMULATOR[7][i];
-        bool isAboveThreshold = sum > THRESHOLD ? true : false;
 
-        if (isAboveThreshold) {
+        if (sum > THRESHOLD) {
             constexpr float qOverPtMultiplier = (Q_OVER_P_END - Q_OVER_P_BEGIN) / ACC_WIDTH;
             constexpr float phiMultiplier = (PHI_END - PHI_BEGIN) / ACC_HEIGHT;
 
